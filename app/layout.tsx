@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// Configurando a fonte Poppins com pesos desejados e subsets
+const poppins = Poppins({
+  weight: ["400", "700"], // Adicione os pesos que você deseja usar
+  subsets: ["latin"], // Subconjunto de caracteres, como "latin", "latin-ext", etc.
+  display: "swap", // O display "swap" permite que a fonte seja exibida rapidamente enquanto carrega
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="bg-[#0E0E0E]">
+      <body className={poppins.className}>
+        <div className="bg-[#0E0E0E]">{children}</div>
+      </body>
     </html>
   );
 }

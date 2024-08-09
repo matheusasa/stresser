@@ -1,0 +1,11 @@
+const Footer = () => {
+  return (
+    <div className="h-[139px] bg-[#161616] mt-[64px] flex items-center justify-center">
+      <div className="text-center text-white">
+        Copyright © 2024 Hiper Stress. All Rights Reserved.
+      </div>
+    </div>
+  );
+};
+
+export default Footer;
