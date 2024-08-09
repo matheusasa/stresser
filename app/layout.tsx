@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 // Configurando a fonte Poppins com pesos desejados e subsets
 const poppins = Poppins({
@@ -22,7 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-[#0E0E0E]">
       <body className={poppins.className}>
-        <div className="bg-[#0E0E0E]">{children}</div>
+        <div className="bg-[#0E0E0E]">
+          <Navbar />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );
