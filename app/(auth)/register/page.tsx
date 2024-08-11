@@ -12,7 +12,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const RegisterPage = () => {
     });
 
     if (response.ok) {
-      // router.push("/login"); // Redireciona para a página de login após o registro bem-sucedido
+      router.push("/login"); // Redireciona para a página de login após o registro bem-sucedido
     } else {
       const data = await response.json();
       setError(data.message || "Registration failed");

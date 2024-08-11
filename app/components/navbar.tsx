@@ -30,7 +30,6 @@ const Navbar: React.FC = () => {
   };
 
   useEffect(() => {
-    // Verifica se o usuário está autenticado
     setAuthenticated(isAuthenticated());
   }, []);
 
@@ -40,7 +39,6 @@ const Navbar: React.FC = () => {
         {/* Logo à esquerda */}
         <div className="flex items-center px-4">
           <Link href="/">
-            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="177"
@@ -129,29 +127,69 @@ const Navbar: React.FC = () => {
         {/* Links no centro */}
         {authenticated && (
           <div className="flex items-center space-x-4">
-            <Link
-              href="/dashboard"
-              className="flex items-center text-white py-4"
+            <div className="lg:hidden">
+              <button
+                onClick={toggleMenu}
+                className="text-white focus:outline-none"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              className={`${
+                isOpen ? "block" : "hidden"
+              } lg:flex lg:space-x-6 bg-[#181818] lg:bg-transparent p-4 lg:p-0 z-50`}
             >
-              <House />
-              <span className="pl-2">Dashboard</span>
-            </Link>
-            <Link href="/painel" className="flex items-center text-white py-4">
-              <LaptopMinimal />
-              <span className="pl-2">Painel</span>
-            </Link>
-            <Link href="/" className="flex items-center text-white py-4">
-              <Code />
-              <span className="pl-2">API</span>
-            </Link>
-            <Link href="/store" className="flex items-center text-white py-4">
-              <ShoppingCart />
-              <span className="pl-2">Store</span>
-            </Link>
-            <Link href="/" className="flex items-center text-white py-4">
-              <Lightbulb />
-              <span className="pl-2">Methods</span>
-            </Link>
+              <Link
+                href="/dashboard"
+                className="flex items-center text-white py-4 lg:inline"
+              >
+                <House />
+                <div className="pl-2">Dashboard</div>
+              </Link>
+              <Link
+                href="/painel"
+                className="flex items-center text-white py-4 lg:inline"
+              >
+                <LaptopMinimal />
+                <div className="pl-2">Painel</div>
+              </Link>
+              <Link
+                href="/"
+                className="flex items-center text-white py-4 lg:inline"
+              >
+                <Code />
+                <div className="pl-2">API</div>
+              </Link>
+              <Link
+                href="/store"
+                className="flex items-center text-white py-4 lg:inline"
+              >
+                <ShoppingCart />
+                <div className="pl-2">Store</div>
+              </Link>
+              <Link
+                href="/"
+                className="flex items-center text-white py-4 lg:inline"
+              >
+                <Lightbulb />
+                <div className="pl-2">Methods</div>
+              </Link>
+            </div>
           </div>
         )}
 
