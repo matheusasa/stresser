@@ -1,5 +1,5 @@
-import PricingTitle from "./PricingTitle";
 import PlanCard from "./PlanCard";
+import PricingTitle from "./PricingTitle";
 
 const plans = [
   {

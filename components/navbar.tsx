@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
               viewBox="0 0 177 46"
               fill="none"
             >
-              <g clip-path="url(#clip0_78_356)">
+              <g clipPath="url(#clip0_78_356)">
                 <path
                   d="M10.919 0H34.9533C40.9792 0 45.8722 4.90667 45.8722 10.9494V35.0519C45.8722 41.0946 40.9792 46.0012 34.9533 46.0012H10.919C4.89304 46 0 41.0933 0 35.0506V10.9494C0 4.90667 4.89304 0 10.919 0Z"
                   fill="url(#paint0_linear_78_356)"
@@ -113,8 +113,8 @@ const Navbar: React.FC = () => {
                   y2="38.8098"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#42B3F8" />
-                  <stop offset="1" stop-color="#1730E2" />
+                  <stop stopColor="#42B3F8" />
+                  <stop offset="1" stopColor="#1730E2" />
                 </linearGradient>
                 <clipPath id="clip0_78_356">
                   <rect width="177" height="46" fill="white" />
@@ -158,36 +158,50 @@ const Navbar: React.FC = () => {
                 href="/dashboard"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <House />
-                <div className="pl-2">Dashboard</div>
+                <div className="flex">
+                  <House />
+                  <div className="pl-2">Dashboard</div>
+                </div>
               </Link>
+
               <Link
                 href="/painel"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <LaptopMinimal />
-                <div className="pl-2">Painel</div>
+                <div className="flex">
+                  <LaptopMinimal />
+                  <div className="pl-2">Painel</div>
+                </div>
               </Link>
+
               <Link
                 href="/"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <Code />
-                <div className="pl-2">API</div>
+                <div className="flex">
+                  <Code />
+                  <div className="pl-2">API</div>
+                </div>
               </Link>
+
               <Link
                 href="/store"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <ShoppingCart />
-                <div className="pl-2">Store</div>
+                <div className="flex">
+                  <ShoppingCart />
+                  <div className="pl-2">Store</div>
+                </div>
               </Link>
+
               <Link
                 href="/"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <Lightbulb />
-                <div className="pl-2">Methods</div>
+                <div className="flex">
+                  <Lightbulb />
+                  <div className="pl-2">Methods</div>
+                </div>
               </Link>
             </div>
           </div>
@@ -218,27 +232,6 @@ const Navbar: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2"
-                    prefetch={false}
-                  >
-                    <div className="h-4 w-4" />
-                    <span>Edit Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2"
-                    prefetch={false}
-                  >
-                    <div className="h-4 w-4" />
-                    <span>Change Password</span>
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Button variant={"ghost"} onClick={signOut}>

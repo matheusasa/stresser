@@ -1,84 +1,120 @@
+"use client";
+import React, { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { ChartDash } from "./chartt";
+import useAttacksData from "@/hooks/useAttacksData";
+import { fetchUserData } from "@/utils/auth";
 
-const MainDash = () => {
+const MainDash: React.FC = () => {
+  const [userId, setUserId] = useState<string | null>(null);
+  const { attacks, loading, error } = useAttacksData(userId ?? "");
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const id = await fetchUserData();
+      if (id) {
+        setUserId(id);
+      } else {
+        console.error("Usuário não autenticado.");
+      }
+    };
+
+    getUserId();
+  }, []);
+
+  if (!userId) {
+    return <div className="text-white">Fetching user data...</div>;
+  }
+
+  if (loading) return <div className="text-white">Loading...</div>;
+  if (error) return <div className="text-white">Error: {error}</div>;
+
+  const totalAttacks = attacks.length;
+
+  // Contar IPs únicos
+  const uniqueIPv4s = new Set(attacks.map((attack) => attack.ipv4));
+  const distinctIPv4Count = uniqueIPv4s.size;
+
+  // Filtrar ataques em andamento
+  const runningAttacks = attacks.filter((attack) => attack.running).length;
+
   return (
-    <div className="flex justify-center items-center text-white ">
+    <div className="flex justify-center items-center text-white">
       <div className="max-w-[1140px]">
-        <div className="text-white text-4xl font-bold px-10 pt-[64px] ">
+        <div className="text-white text-4xl font-bold px-10 pt-[64px]">
           Dashboard
         </div>
         <Separator className="w-full my-4" />
-        <div className="grid grid-cols-2 lg:flex w-full justify-between text-white ">
-          <div className="px-10 sm:py-10 flex flex-col">
-            <div className="flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="37"
-                height="36"
-                viewBox="0 0 37 36"
-                fill="none"
-              >
-                <g filter="url(#filter0_d_78_174)">
-                  <rect
-                    x="6"
-                    y="2"
-                    width="25"
-                    height="25"
-                    rx="6"
-                    fill="#0075FF"
-                  />
-                </g>
-                <path
-                  d="M24.75 15.6364H12.25C11.9185 15.6364 11.6005 15.7705 11.3661 16.0091C11.1317 16.2478 11 16.5715 11 16.9091V20.7273C11 21.0648 11.1317 21.3885 11.3661 21.6272C11.6005 21.8659 11.9185 22 12.25 22H24.75C25.0815 22 25.3995 21.8659 25.6339 21.6272C25.8683 21.3885 26 21.0648 26 20.7273V16.9091C26 16.5715 25.8683 16.2478 25.6339 16.0091C25.3995 15.7705 25.0815 15.6364 24.75 15.6364ZM24.75 20.7273H12.25V16.9091H24.75V20.7273ZM24.75 8H12.25C11.9185 8 11.6005 8.13409 11.3661 8.37277C11.1317 8.61146 11 8.93518 11 9.27273V13.0909C11 13.4285 11.1317 13.7522 11.3661 13.9909C11.6005 14.2295 11.9185 14.3636 12.25 14.3636H24.75C25.0815 14.3636 25.3995 14.2295 25.6339 13.9909C25.8683 13.7522 26 13.4285 26 13.0909V9.27273C26 8.93518 25.8683 8.61146 25.6339 8.37277C25.3995 8.13409 25.0815 8 24.75 8ZM24.75 13.0909H12.25V9.27273H24.75V13.0909ZM23.5 11.1818C23.5 11.3706 23.445 11.5552 23.342 11.7121C23.239 11.8691 23.0926 11.9915 22.9213 12.0637C22.75 12.136 22.5615 12.1549 22.3796 12.118C22.1977 12.0812 22.0307 11.9903 21.8996 11.8568C21.7685 11.7233 21.6792 11.5532 21.643 11.368C21.6068 11.1829 21.6254 10.9909 21.6964 10.8165C21.7673 10.6421 21.8875 10.493 22.0417 10.3881C22.1958 10.2833 22.3771 10.2273 22.5625 10.2273C22.8111 10.2273 23.0496 10.3278 23.2254 10.5069C23.4012 10.6859 23.5 10.9287 23.5 11.1818ZM23.5 18.8182C23.5 19.007 23.445 19.1915 23.342 19.3485C23.239 19.5055 23.0926 19.6278 22.9213 19.7001C22.75 19.7723 22.5615 19.7912 22.3796 19.7544C22.1977 19.7176 22.0307 19.6266 21.8996 19.4931C21.7685 19.3597 21.6792 19.1896 21.643 19.0044C21.6068 18.8192 21.6254 18.6273 21.6964 18.4529C21.7673 18.2785 21.8875 18.1294 22.0417 18.0245C22.1958 17.9196 22.3771 17.8636 22.5625 17.8636C22.8111 17.8636 23.0496 17.9642 23.2254 18.1432C23.4012 18.3222 23.5 18.565 23.5 18.8182Z"
-                  fill="white"
-                />
-                <defs>
-                  <filter
-                    id="filter0_d_78_174"
-                    x="0.5"
-                    y="-2.38419e-07"
-                    width="36"
-                    height="36"
-                    filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
-                  >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix
-                      in="SourceAlpha"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                      result="hardAlpha"
-                    />
-                    <feOffset dy="3.5" />
-                    <feGaussianBlur stdDeviation="2.75" />
-                    <feColorMatrix
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.02 0"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in2="BackgroundImageFix"
-                      result="effect1_dropShadow_78_174"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in="SourceGraphic"
-                      in2="effect1_dropShadow_78_174"
-                      result="shape"
-                    />
-                  </filter>
-                </defs>
-              </svg>
-              Servers
-            </div>
-            <div className="text-xl font-bold px-2">200</div>
-          </div>
-          <div className="flex sm:py-10">
+        <div className="grid grid-cols-2 lg:flex w-full justify-between text-white lg:px-5">
+          <div className="pr-10 flex flex-col justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="37"
-              height="36"
+              width="70"
+              height="70"
+              viewBox="0 0 37 36"
+              fill="none"
+            >
+              <g filter="url(#filter0_d_78_174)">
+                <rect
+                  x="6"
+                  y="2"
+                  width="25"
+                  height="25"
+                  rx="6"
+                  fill="#0075FF"
+                />
+              </g>
+              <path
+                d="M24.75 15.6364H12.25C11.9185 15.6364 11.6005 15.7705 11.3661 16.0091C11.1317 16.2478 11 16.5715 11 16.9091V20.7273C11 21.0648 11.1317 21.3885 11.3661 21.6272C11.6005 21.8659 11.9185 22 12.25 22H24.75C25.0815 22 25.3995 21.8659 25.6339 21.6272C25.8683 21.3885 26 21.0648 26 20.7273V16.9091C26 16.5715 25.8683 16.2478 25.6339 16.0091C25.3995 15.7705 25.0815 15.6364 24.75 15.6364ZM24.75 20.7273H12.25V16.9091H24.75V20.7273ZM24.75 8H12.25C11.9185 8 11.6005 8.13409 11.3661 8.37277C11.1317 8.61146 11 8.93518 11 9.27273V13.0909C11 13.4285 11.1317 13.7522 11.3661 13.9909C11.6005 14.2295 11.9185 14.3636 12.25 14.3636H24.75C25.0815 14.3636 25.3995 14.2295 25.6339 13.9909C25.8683 13.7522 26 13.4285 26 13.0909V9.27273C26 8.93518 25.8683 8.61146 25.6339 8.37277C25.3995 8.13409 25.0815 8 24.75 8ZM24.75 13.0909H12.25V9.27273H24.75V13.0909ZM23.5 11.1818C23.5 11.3706 23.445 11.5552 23.342 11.7121C23.239 11.8691 23.0926 11.9915 22.9213 12.0637C22.75 12.136 22.5615 12.1549 22.3796 12.118C22.1977 12.0812 22.0307 11.9903 21.8996 11.8568C21.7685 11.7233 21.6792 11.5532 21.643 11.368C21.6068 11.1829 21.6254 10.9909 21.6964 10.8165C21.7673 10.6421 21.8875 10.493 22.0417 10.3881C22.1958 10.2833 22.3771 10.2273 22.5625 10.2273C22.8111 10.2273 23.0496 10.3278 23.2254 10.5069C23.4012 10.6859 23.5 10.9287 23.5 11.1818ZM23.5 18.8182C23.5 19.007 23.445 19.1915 23.342 19.3485C23.239 19.5055 23.0926 19.6278 22.9213 19.7001C22.75 19.7723 22.5615 19.7912 22.3796 19.7544C22.1977 19.7176 22.0307 19.6266 21.8996 19.4931C21.7685 19.3597 21.6792 19.1896 21.643 19.0044C21.6068 18.8192 21.6254 18.6273 21.6964 18.4529C21.7673 18.2785 21.8875 18.1294 22.0417 18.0245C22.1958 17.9196 22.3771 17.8636 22.5625 17.8636C22.8111 17.8636 23.0496 17.9642 23.2254 18.1432C23.4012 18.3222 23.5 18.565 23.5 18.8182Z"
+                fill="white"
+              />
+              <defs>
+                <filter
+                  id="filter0_d_78_174"
+                  x="0.5"
+                  y="-2.38419e-07"
+                  width="36"
+                  height="36"
+                  filterUnits="userSpaceOnUse"
+                  colorInterpolationFilters="sRGB"
+                >
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
+                  <feOffset dy="3.5" />
+                  <feGaussianBlur stdDeviation="2.75" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.02 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_78_174"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_78_174"
+                    result="shape"
+                  />
+                </filter>
+              </defs>
+            </svg>
+            <div className="flex">Servers</div>
+            <div className="text-xl py-5 font-bold px-2">
+              {distinctIPv4Count}
+            </div>
+          </div>
+          <div className=" flex flex-col justify-center items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="70"
+              height="70"
               viewBox="0 0 37 36"
               fill="none"
             >
@@ -104,9 +140,9 @@ const MainDash = () => {
                   width="36"
                   height="36"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -133,13 +169,14 @@ const MainDash = () => {
                 </filter>
               </defs>
             </svg>
-            Running attacks
+            <div className="">Running attacks</div>
+            <div className="px-10 py-5 text-xl font-bold">{runningAttacks}</div>
           </div>
-          <div className="px-10 flex sm:py-10">
+          <div className="flex flex-col justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="37"
-              height="37"
+              width="70"
+              height="70"
               viewBox="0 0 37 37"
               fill="none"
             >
@@ -165,9 +202,9 @@ const MainDash = () => {
                   width="36"
                   height="36"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -194,73 +231,13 @@ const MainDash = () => {
                 </filter>
               </defs>
             </svg>
-            Total attacks
-          </div>
-          <div className="flex sm:py-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="37"
-              height="37"
-              viewBox="0 0 37 37"
-              fill="none"
-            >
-              <g filter="url(#filter0_d_78_204)">
-                <rect
-                  x="6.00085"
-                  y="2.5"
-                  width="25"
-                  height="25"
-                  rx="6"
-                  fill="#0075FF"
-                />
-              </g>
-              <path
-                d="M25.419 20.6481C24.3949 18.807 22.8167 17.4867 20.975 16.8609C21.886 16.2969 22.5938 15.4375 22.9897 14.4147C23.3856 13.3919 23.4477 12.2622 23.1664 11.1992C22.8852 10.1361 22.2762 9.19846 21.4329 8.53019C20.5896 7.86192 19.5587 7.5 18.4984 7.5C17.4382 7.5 16.4072 7.86192 15.564 8.53019C14.7207 9.19846 14.1116 10.1361 13.8304 11.1992C13.5491 12.2622 13.6112 13.3919 14.0071 14.4147C14.403 15.4375 15.1108 16.2969 16.0219 16.8609C14.1801 17.486 12.6019 18.8063 11.5778 20.6481C11.5402 20.7118 11.5153 20.7827 11.5045 20.8565C11.4937 20.9304 11.4973 21.0057 11.5149 21.0781C11.5326 21.1505 11.564 21.2185 11.6074 21.2781C11.6507 21.3377 11.7051 21.3876 11.7673 21.425C11.8295 21.4624 11.8983 21.4864 11.9695 21.4957C12.0408 21.5049 12.1132 21.4993 12.1823 21.479C12.2515 21.4587 12.316 21.4243 12.3721 21.3777C12.4282 21.331 12.4748 21.2732 12.5091 21.2075C13.776 18.9307 16.0151 17.5713 18.4984 17.5713C20.9817 17.5713 23.2209 18.9307 24.4877 21.2075C24.522 21.2732 24.5686 21.331 24.6247 21.3777C24.6808 21.4243 24.7454 21.4587 24.8145 21.479C24.8837 21.4993 24.956 21.5049 25.0273 21.4957C25.0986 21.4864 25.1673 21.4624 25.2295 21.425C25.2917 21.3876 25.3461 21.3377 25.3895 21.2781C25.4328 21.2185 25.4642 21.1505 25.4819 21.0781C25.4996 21.0057 25.5031 20.9304 25.4923 20.8565C25.4815 20.7827 25.4566 20.7118 25.419 20.6481ZM14.7328 12.5366C14.7328 11.7621 14.9537 11.005 15.3674 10.3611C15.7812 9.71711 16.3693 9.21519 17.0574 8.91881C17.7455 8.62242 18.5026 8.54488 19.233 8.69597C19.9635 8.84707 20.6345 9.22002 21.1611 9.76767C21.6877 10.3153 22.0464 11.0131 22.1917 11.7727C22.337 12.5323 22.2624 13.3196 21.9774 14.0352C21.6924 14.7507 21.2097 15.3623 20.5905 15.7926C19.9712 16.2229 19.2432 16.4525 18.4984 16.4525C17.5 16.4514 16.5429 16.0385 15.8369 15.3044C15.131 14.5702 14.7339 13.5748 14.7328 12.5366Z"
-                fill="white"
-              />
-              <defs>
-                <filter
-                  id="filter0_d_78_204"
-                  x="0.500854"
-                  y="0.5"
-                  width="36"
-                  height="36"
-                  filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
-                >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feColorMatrix
-                    in="SourceAlpha"
-                    type="matrix"
-                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                    result="hardAlpha"
-                  />
-                  <feOffset dy="3.5" />
-                  <feGaussianBlur stdDeviation="2.75" />
-                  <feColorMatrix
-                    type="matrix"
-                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.02 0"
-                  />
-                  <feBlend
-                    mode="normal"
-                    in2="BackgroundImageFix"
-                    result="effect1_dropShadow_78_204"
-                  />
-                  <feBlend
-                    mode="normal"
-                    in="SourceGraphic"
-                    in2="effect1_dropShadow_78_204"
-                    result="shape"
-                  />
-                </filter>
-              </defs>
-            </svg>
-            Users
+            <div className="flex ">Total attacks</div>
+            <div className="px-10 text-xl py-5 font-bold flex ">
+              {totalAttacks}
+            </div>
           </div>
         </div>
-        <div className="hidden lg:block bg-[#242424]  h-[500px] rounded-2xl w-full">
-          <div className="text-3xl pt-[20px] pl-[20px] font-bold">Attacks</div>
-          <div className="text-3xl font-bold pl-[20px]">Overview</div>
+        <div className="hidden lg:block h-[500px] rounded-2xl w-full">
           <ChartDash />
         </div>
       </div>

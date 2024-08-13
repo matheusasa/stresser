@@ -1,5 +1,5 @@
-import Main from "./components/main";
-import CardBuy from "./components/buys";
+import Main from "../components/main";
+import CardBuy from "../components/buys";
 
 export default function Home() {
   return (

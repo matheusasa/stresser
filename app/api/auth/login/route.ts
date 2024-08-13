@@ -9,21 +9,28 @@ export async function POST(request: Request) {
   const { email, password } = await request.json();
   
   // Verifica o usuário
-  const emails = await db.user.findUnique({ where: { email } });
-  if (!emails) {
+  const user = await db.user.findUnique({ where: { email } });
+  if (!user) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
   }
 
   // Verifica a senha
-  const isMatch = await bcrypt.compare(password, emails.password);
+  const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
   }
 
   // Cria um token JWT
-  const token = jwt.sign({ userId: emails.id }, JWT_SECRET, { expiresIn: '1h' });
-  
-  
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 
-  return NextResponse.json({ token });
+  // Define o cookie no response
+  const response = NextResponse.json({ message: 'Login successful' });
+  response.cookies.set('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Define como true em produção
+    path: '/',
+    maxAge: 3600, // 1 hour
+  });
+
+  return response;
 }

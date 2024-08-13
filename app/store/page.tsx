@@ -1,4 +1,4 @@
-import CardBuy from "../components/buys";
+import CardBuy from "../../components/buys";
 
 const StorePage = () => {
   return (

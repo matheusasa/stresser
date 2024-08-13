@@ -13,15 +13,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(uuid()) // ID único para cada usuário
-  name      String? // Nome do usuário
-  user      String   @unique // Nome de usuário (único)
-  email     String   @unique // Endereço de email (único)
-  password  String // Senha do usuário (armazenada como hash)
-  image     String? // URL da imagem de perfil do usuário
-  createdAt DateTime @default(now()) // Data de criação do usuário
-  updatedAt DateTime @updatedAt // Data de última atualização
+model Attack {
+  id          Int      @id @default(autoincrement())
+  ipv4        String   @map("ipv4_address")
+  ipRange     String?  @map("ip_range")
+  port        Int      @map("port")
+  time        Int      @map("attack_time")
+  protocol    String   @map("protocol")
+  method      String   @map("method")
+  concurrents Int      @map("concurrents")
+  running     Boolean  @default(false)
+  createdAt   DateTime @default(now())
 
-  @@map("users") // Opcional: nome da tabela no banco de dados
+  userId String // ID do usuário que iniciou o ataque
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("attacks")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  user      String   @unique
+  email     String   @unique
+  password  String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  attacks Attack[] // Relacionamento de um para muitos com Attack
+
+  @@map("users")
 }
