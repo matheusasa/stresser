@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -23,7 +23,7 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ user, password }),
       });
 
       const data = await response.json();
@@ -48,12 +48,12 @@ const LoginPage = () => {
         <div className="text-4xl font-bold pb-[20px] w-full">Login</div>
         <form onSubmit={handleSubmit}>
           <div className="py-6 w-full">
-            <Label>Email</Label>
+            <Label>User</Label>
             <Input
-              placeholder="Enter your email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your user"
+              type="user"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               className="bg-[#000] h-[50px] w-full text-white border-[#343434]"
               required
             />
@@ -71,7 +71,10 @@ const LoginPage = () => {
           </div>
           {error && <div className="pt-2 text-red-500 text-sm">{error}</div>}
           <div className="pt-10">
-            <Button type="submit" className="w-full bg-[#4A9FFF] rounded-full">
+            <Button
+              type="submit"
+              className="w-full bg-custom-blue hover:bg-gradient-start rounded-full"
+            >
               Login
             </Button>
           </div>

@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { ChartDash } from "./chartt";
 import useAttacksData from "@/hooks/useAttacksData";
 import { fetchUserData } from "@/utils/auth";
+import { AttackData, Attack } from "@/types";
 
 const MainDash: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -38,6 +39,37 @@ const MainDash: React.FC = () => {
   // Filtrar ataques em andamento
   const runningAttacks = attacks.filter((attack) => attack.running).length;
 
+  const transformData = (attacks: Attack[]): AttackData[] => {
+    const dataMap: { [key: string]: number } = {};
+
+    attacks.forEach((attack) => {
+      // Garantir que ipRange seja string | null
+      const ipRange = attack.ipRange ?? null;
+
+      // Verificar e converter createdAt para um objeto Date se necessário
+      const date =
+        typeof attack.createdAt === "string"
+          ? new Date(attack.createdAt).toISOString().slice(0, 10)
+          : attack.createdAt.toISOString().slice(0, 10);
+
+      if (dataMap[date]) {
+        dataMap[date] += 1;
+      } else {
+        dataMap[date] = 1;
+      }
+    });
+
+    // Transformar o mapa em array de objetos e ordenar por data
+    return Object.keys(dataMap)
+      .map((date) => ({
+        date,
+        count: dataMap[date],
+      }))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  };
+
+  const chartData = transformData(attacks);
+
   return (
     <div className="flex justify-center items-center text-white">
       <div className="max-w-[1140px]">
@@ -46,7 +78,7 @@ const MainDash: React.FC = () => {
         </div>
         <Separator className="w-full my-4" />
         <div className="grid grid-cols-2 lg:flex w-full justify-between text-white lg:px-5">
-          <div className="pr-10 flex flex-col justify-center items-center">
+          <div className="px-5 flex flex-col justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="70"
@@ -110,7 +142,7 @@ const MainDash: React.FC = () => {
               {distinctIPv4Count}
             </div>
           </div>
-          <div className=" flex flex-col justify-center items-center">
+          <div className=" flex flex-col justify-center px-5 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="70"
@@ -172,7 +204,7 @@ const MainDash: React.FC = () => {
             <div className="">Running attacks</div>
             <div className="px-10 py-5 text-xl font-bold">{runningAttacks}</div>
           </div>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col px-5 justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="70"
@@ -238,7 +270,7 @@ const MainDash: React.FC = () => {
           </div>
         </div>
         <div className="hidden lg:block h-[500px] rounded-2xl w-full">
-          <ChartDash />
+          <ChartDash data={chartData} />
         </div>
       </div>
     </div>

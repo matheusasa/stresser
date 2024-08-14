@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
@@ -16,65 +15,22 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Função para buscar ataques dos últimos 7 dias
-const fetchAttackData = async (userId: string) => {
-  try {
-    const response = await fetch(`/api/send?userId=${userId}`);
-    console.log("Response Status:", response.status); // Verifique o status da resposta
-    if (!response.ok) {
-      throw new Error("Erro ao buscar dados dos ataques");
-    }
-    const data = await response.json();
-    console.log("Dados da API:", data); // Verifique os dados recebidos
-    return data;
-  } catch (error) {
-    console.error("Erro na função fetchAttackData:", error);
-    throw error;
-  }
-};
-
 // Configuração do gráfico para uma única linha
 const chartConfig = {
   attacks: {
     label: "Attacks",
-    color: "hsl(var(--chart-1))", // Ajuste a cor conforme necessário
+    color: "#0075FF", // Cor ajustada para #0075FF
   },
 } satisfies ChartConfig;
 
-export function ChartDash() {
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [userId, setUserId] = useState<string | null>(null); // Assume que você tem algum mecanismo para obter o userId
+// Tipagem para os dados de ataque
+interface AttackData {
+  date: string;
+  count: number;
+}
 
-  useEffect(() => {
-    console.log("userId:", userId); // Verifique se userId está definido
-    if (userId) {
-      fetchAttackData(userId)
-        .then((data) => {
-          console.log("Dados recebidos da API:", data);
-
-          // Filtrar e contar ataques nos últimos 7 dias
-          const today = new Date();
-          const last7Days = Array.from({ length: 7 }, (_, i) => {
-            const date = new Date();
-            date.setDate(today.getDate() - i);
-            return date.toISOString().split("T")[0]; // Obtém a data no formato YYYY-MM-DD
-          }).reverse();
-
-          // Contar ataques por data
-          const attackCounts = last7Days.map((date) => ({
-            date,
-            count: data.filter((attack: any) => attack.date === date).length,
-          }));
-
-          console.log("Dados processados para o gráfico:", attackCounts);
-          setChartData(attackCounts);
-        })
-        .catch((error) => {
-          console.error("Erro ao carregar dados do gráfico:", error);
-        });
-    }
-  }, [userId]);
-
+// Componente que agora recebe os dados como prop
+export function ChartDash({ data }: { data: AttackData[] }) {
   return (
     <Card className="bg-[#242424] border-[#242424]">
       <CardHeader>
@@ -86,17 +42,17 @@ export function ChartDash() {
       <CardContent className="bg-[#242424]">
         <ChartContainer
           config={chartConfig}
-          style={{ width: "100%", height: "auto" }}
+          style={{ width: 900, height: 300 }}
         >
           <AreaChart
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
               top: 20,
               bottom: 20,
             }}
-            style={{ width: "100%", height: 300 }} // Ajuste a largura aqui
+            style={{ width: "500", height: 300 }} // Ajuste a largura aqui
           >
             <CartesianGrid vertical={false} />
             <XAxis
@@ -114,9 +70,9 @@ export function ChartDash() {
             <Area
               dataKey="count"
               type="monotone"
-              fill="var(--color-attacks)"
+              fill="#0075FF" // Cor ajustada para #0075FF
               fillOpacity={0.4}
-              stroke="var(--color-attacks)"
+              stroke="#0075FF" // Cor ajustada para #0075FF
               stackId="a"
             />
           </AreaChart>

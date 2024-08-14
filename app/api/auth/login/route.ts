@@ -6,22 +6,22 @@ import { db } from '@/lib/db';
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 export async function POST(request: Request) {
-  const { email, password } = await request.json();
+  const { user, password } = await request.json();
   
   // Verifica o usuário
-  const user = await db.user.findUnique({ where: { email } });
-  if (!user) {
+  const user1 = await db.user.findUnique({ where: { user } });
+  if (!user1) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
   }
 
   // Verifica a senha
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user1.password);
   if (!isMatch) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
   }
 
   // Cria um token JWT
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user1.id }, JWT_SECRET, { expiresIn: '1h' });
 
   // Define o cookie no response
   const response = NextResponse.json({ message: 'Login successful' });

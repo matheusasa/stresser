@@ -95,7 +95,10 @@ const RegisterPage = () => {
           </div>
           {error && <div className="pt-2 text-red-500 text-sm">{error}</div>}
           <div className="pt-10">
-            <Button type="submit" className="w-full bg-[#4A9FFF] rounded-full">
+            <Button
+              type="submit"
+              className="w-full bg-custom-blue hover:bg-gradient-start rounded-full"
+            >
               Create Account
             </Button>
           </div>

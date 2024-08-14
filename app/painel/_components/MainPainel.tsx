@@ -312,7 +312,7 @@ const MainPainel = () => {
                       <div>
                         <Button
                           type="submit"
-                          className="w-full bg-[#4A9FFF] rounded-full"
+                          className="w-full bg-custom-blue hover:bg-gradient-start rounded-full"
                         >
                           Attack
                         </Button>

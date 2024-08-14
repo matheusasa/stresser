@@ -242,7 +242,9 @@ const Navbar: React.FC = () => {
             </DropdownMenu>
           ) : (
             <Link href="/login">
-              <Button>Login</Button>
+              <Button className="rounded-xl bg-[#161616] border-[#343434] border-2 hover:bg-gradient-start">
+                Login
+              </Button>
             </Link>
           )}
         </div>
