@@ -36,7 +36,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
         />
       ))}
     </div>
-    <button className="bg-blue-500 text-white py-2 px-4 rounded-full w-full">
+    <button className="bg-custom-blue hover:bg-gradient-start text-white py-2 px-4 rounded-full w-full">
       Buy Now
     </button>
   </div>

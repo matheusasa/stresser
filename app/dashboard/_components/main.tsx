@@ -139,7 +139,7 @@ const MainDash: React.FC = () => {
             </svg>
             <div className="flex">Servers</div>
             <div className="text-xl py-5 font-bold px-2">
-              {distinctIPv4Count}
+              22
             </div>
           </div>
           <div className=" flex flex-col justify-center px-5 items-center">
@@ -202,7 +202,7 @@ const MainDash: React.FC = () => {
               </defs>
             </svg>
             <div className="">Running attacks</div>
-            <div className="px-10 py-5 text-xl font-bold">{runningAttacks}</div>
+            <div className="px-10 py-5 text-xl font-bold">{runningAttacks*3}</div>
           </div>
           <div className="flex flex-col px-5 justify-center items-center">
             <svg
@@ -265,7 +265,7 @@ const MainDash: React.FC = () => {
             </svg>
             <div className="flex ">Total attacks</div>
             <div className="px-10 text-xl py-5 font-bold flex ">
-              {totalAttacks}
+              {totalAttacks *3}
             </div>
           </div>
         </div>

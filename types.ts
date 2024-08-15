@@ -10,6 +10,7 @@ export interface Attack {
   running: boolean;
   createdAt: Date;
   userId: string;
+  geo:string
 }
   export interface AttackData {
     date: string;

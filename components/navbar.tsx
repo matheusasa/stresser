@@ -158,7 +158,7 @@ const Navbar: React.FC = () => {
                 href="/dashboard"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <div className="flex">
+                <div className="flex text-[#C9C9C9]">
                   <House />
                   <div className="pl-2">Dashboard</div>
                 </div>
@@ -168,7 +168,7 @@ const Navbar: React.FC = () => {
                 href="/painel"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <div className="flex">
+                <div className="flex text-[#C9C9C9]">
                   <LaptopMinimal />
                   <div className="pl-2">Painel</div>
                 </div>
@@ -178,7 +178,7 @@ const Navbar: React.FC = () => {
                 href="/"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <div className="flex">
+                <div className="flex text-[#C9C9C9]">
                   <Code />
                   <div className="pl-2">API</div>
                 </div>
@@ -188,7 +188,7 @@ const Navbar: React.FC = () => {
                 href="/store"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <div className="flex">
+                <div className="flex text-[#C9C9C9]">
                   <ShoppingCart />
                   <div className="pl-2">Store</div>
                 </div>
@@ -198,7 +198,7 @@ const Navbar: React.FC = () => {
                 href="/"
                 className="flex items-center text-white py-4 lg:inline"
               >
-                <div className="flex">
+                <div className="flex text-[#C9C9C9]">
                   <Lightbulb />
                   <div className="pl-2">Methods</div>
                 </div>

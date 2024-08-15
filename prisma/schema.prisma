@@ -24,6 +24,7 @@ model Attack {
   concurrents Int      @map("concurrents")
   running     Boolean  @default(false)
   createdAt   DateTime @default(now())
+  geo String?
 
   userId String // ID do usuário que iniciou o ataque
   user   User   @relation(fields: [userId], references: [id])

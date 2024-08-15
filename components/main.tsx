@@ -14,11 +14,11 @@ const Main = () => {
             <br />
             enables you to easily launch powerful tests.
           </span>
-          <button className="w-full max-w-[301px] h-[48px] flex justify-center items-center bg-[#4a9fff] rounded-[50px]">
-            <span className="text-[16px] font-semibold leading-[24px] text-[#e2e2e2]">
+          <button className="w-full max-w-[301px] h-[48px] flex justify-center items-center bg-custom-blue hover:bg-gradient-start rounded-[50px]">
+            <span className="text-[16px] font-semibold leading-[24px] text-[#e2e2e2] mr-2">
               Get Started
             </span>
-            <div className="w-[24px] h-[24px]">
+            <div className="w-[24px] h-[24px] flex items-center">
               <div className="w-[18px] h-[15px] bg-arrow bg-[length:100%_100%] bg-no-repeat" />
             </div>
           </button>

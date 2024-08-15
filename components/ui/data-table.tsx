@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className="bg-[#000] h-[50px] w-full lg:w-[306px] text-white border-[#343434]"
+          className="bg-transparent h-[50px] w-full lg:w-[306px] text-white border-[#343434]"
         />
         <div className="px-3">
           <Button variant={"destructive"} className="w-[178px] rounded-xl">
@@ -77,14 +77,14 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border-[#343434] border">
         <Table>
-          <TableHeader>
+          <TableHeader className="text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-white">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

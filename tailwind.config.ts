@@ -24,9 +24,11 @@ const config = {
         'concurrents': "url('/5988b22c-2543-4400-b639-96a8c0646c55.png')"
       },
       colors: {
+        'custom-red':'rgb(245, 24, 40,0.6)',
         'custom-blue': 'rgba(74, 159, 255, 0.6)',
         'gradient-start': '#4A9FFF',
         'gradient-end': '#EFEFEF',
+        'preto':'#0E0E0E',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
